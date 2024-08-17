@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, request, url_for, redirect
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField
@@ -8,7 +10,7 @@ from sqlalchemy import Integer, String, Float
 from bs4 import BeautifulSoup
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'ABC123'
+app.config['SECRET_KEY'] = os.environ.get('FLASK_KEY')
 ckeditor = CKEditor(app)
 
 
@@ -16,7 +18,7 @@ class Base(DeclarativeBase):
     pass
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///books.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI", "sqlite:///messages.db")
 # Create the extension
 db = SQLAlchemy(model_class=Base)
 # Initialise the app with the extension
